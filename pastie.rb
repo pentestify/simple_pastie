@@ -23,6 +23,16 @@ get '/show/:id' do
   erb :show
 end
 
+get '/show/:id/render' do
+  paste_id = params[:id]
+  begin
+    File.open("/tmp/#{paste_id}","r"){ |f| @paste = f.read }
+  rescue
+    @paste = "Unable to find"
+  end
+  erb :render, :layout => :render_layout
+end
+
 post '/pasteit' do
   id = rand(10000000000000)
 
