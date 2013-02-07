@@ -1,0 +1,8 @@
+body {
+  background-color: #ddd;
+}
+pre { 
+  border: none !important;
+  padding: 1em;
+  background-color: #ddd;
+}
