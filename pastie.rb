@@ -28,7 +28,7 @@ end
 get '/show/:id' do
   paste_id = params[:id]
   begin
-    $redis.get(paste_id)
+    @paste = $redis.get(paste_id)
   rescue
     @paste = "Unable to find"
   end
@@ -38,7 +38,7 @@ end
 get '/show/:id/render' do
   paste_id = params[:id]
   begin
-    $redis.get(paste_id) 
+    @paste = $redis.get(paste_id) 
   rescue
     @paste = "Unable to find"
   end
