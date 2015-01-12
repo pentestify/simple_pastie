@@ -49,7 +49,7 @@ post '/pasteit' do
   id = SecureRandom.uuid
   content = params["content"]
 
-  $redis.set(id,content)
+  $redis.set(id,sanitize(content))
 
   redirect "/show/#{id}"
 end
