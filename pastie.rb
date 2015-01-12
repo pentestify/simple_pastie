@@ -1,6 +1,16 @@
 require 'sinatra'
 require 'redis'
 require 'securerandom'
+require './helpers'
+
+helpers do
+  def sanitize(string)
+    return "" unless string
+    string.gsub!("</pre>","(.)(.)")
+    # TODO - more filterin here pls!
+    return string
+  end
+end
 
 configure do
   uri = URI.parse(ENV["REDISTOGO_URL"])
