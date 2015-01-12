@@ -3,11 +3,11 @@ require 'redis'
 require 'securerandom'
 
 helpers do
-  def sanitize(string)
-    return "" unless string
-    string.gsub!("</pre>","(.)(.)")
+  def sanitize(string="")
+    string.gsub!("<","(.)(.)")
+    string.gsub!(">","(.)(.)")
     # TODO - more filterin here pls!
-    return string
+  string
   end
 end
 
@@ -47,8 +47,7 @@ end
 
 post '/pasteit' do
   id = SecureRandom.uuid
-
-  content = sanitize(params["content"])
+  content = params["content"]
 
   $redis.set(id,content)
 
