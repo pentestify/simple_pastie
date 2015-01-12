@@ -13,7 +13,7 @@ end
 
 configure do
   uri = URI.parse(ENV["REDISTOGO_URL"])
-  REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+  $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 end
 
 before do
@@ -28,7 +28,7 @@ end
 get '/show/:id' do
   paste_id = params[:id]
   begin
-    redis.get(paste_id)
+    $redis.get(paste_id)
   rescue
     @paste = "Unable to find"
   end
@@ -38,7 +38,7 @@ end
 get '/show/:id/render' do
   paste_id = params[:id]
   begin
-    redis.get(paste_id) 
+    $redis.get(paste_id) 
   rescue
     @paste = "Unable to find"
   end
@@ -50,7 +50,7 @@ post '/pasteit' do
 
   content = sanitize(params["content"])
 
-  redis.set(id,content)
+  $redis.set(id,content)
 
   redirect "/show/#{id}"
 end
