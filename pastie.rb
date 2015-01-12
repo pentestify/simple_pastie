@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'redis'
 require 'securerandom'
-require './helpers'
 
 helpers do
   def sanitize(string)
