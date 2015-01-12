@@ -1,4 +1,11 @@
 require 'sinatra'
+require 'redis'
+require 'securerandom'
+
+configure do
+  uri = URI.parse(ENV["REDISTOGO_URL"])
+  REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+end
 
 before do
   puts '[Params]'
@@ -12,7 +19,7 @@ end
 get '/show/:id' do
   paste_id = params[:id]
   begin
-    File.open("/tmp/#{paste_id}","r"){ |f| @paste = f.read }
+    redis.get(paste_id)
   rescue
     @paste = "Unable to find"
   end
@@ -22,7 +29,7 @@ end
 get '/show/:id/render' do
   paste_id = params[:id]
   begin
-    File.open("/tmp/#{paste_id}","r"){ |f| @paste = f.read }
+    redis.get(paste_id) 
   rescue
     @paste = "Unable to find"
   end
@@ -30,13 +37,11 @@ get '/show/:id/render' do
 end
 
 post '/pasteit' do
-  id = rand(10000000000000)
+  id = SecureRandom.uuid
 
-  content = params["content"]
-  content = sanitize content
+  content = sanitize(params["content"])
 
-  puts "Got content: #{content}"
+  redis.set(id,content)
 
-  File.open("/tmp/#{id}","w") { |f| f.write content }
   redirect "/show/#{id}"
 end
