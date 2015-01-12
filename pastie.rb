@@ -9,10 +9,6 @@ get '/' do
  erb :paste
 end
 
-#get '/paste' do
-# erb :paste
-#end
-
 get '/show/:id' do
   paste_id = params[:id]
   begin
