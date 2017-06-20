@@ -4,8 +4,8 @@ require 'securerandom'
 
 helpers do
   def sanitize(string="")
-    string.gsub!("<","(.)(.)")
-    string.gsub!(">","(.)(.)")
+    string.gsub!("<","")
+    string.gsub!(">","")
     # TODO - more filterin here pls!
   string
   end
@@ -38,7 +38,7 @@ end
 get '/show/:id/render' do
   paste_id = params[:id]
   begin
-    @paste = $redis.get(paste_id) 
+    @paste = $redis.get(paste_id)
   rescue
     @paste = "Unable to find"
   end
